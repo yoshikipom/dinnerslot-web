@@ -1,5 +1,0 @@
-java.lang.Exception
- at example.StackTrace$AAA.ccc(StackTrace.java:21)
- at example.StackTrace$AAA.bbb(StackTrace.java:14)
- at example.StackTrace$AAA.aaa(StackTrace.java:10)
- at example.StackTrace.main(StackTrace.java:47) Caused by: java.io.IOException: No space memory  Caused by: java.io.IOException: No space memoryCaused by: java.io.IOException: No space memoryCaused by: java.io.IOException: No space memoryCaused by: java.io.IOException: No space memoryat example.StackTrace$AAA.ccc(StackTrace.java:22) ... 3 more
