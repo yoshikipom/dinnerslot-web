@@ -9,20 +9,31 @@ interface Food {
   name: string
 }
 
-const defaultFoodList: Food[] = [
-  {
-    id: 1,
-    name: "おにぎり"
-  },
-  {
-    id: 2,
-    name: "オムライス"
-  },
-  {
-    id: 3,
-    name: "すき焼き"
-  }
+const foodNames = [
+  "ささみチーズかつ",
+  "からあげ",
+  "油淋鶏",
+  "メンチカツ",
+  "にくじゃが",
+  "きんぴらごぼう",
+  "切り干し大根",
+  "シチュー",
+  "カレーライス",
+  "ハヤシライス",
+  "ルーロー飯",
+  "そばめし",
+  "グラタン",
+  "角煮",
+  "ハンバーグ",
+  "鶏手羽煮",
+  "ネギ塩豚",
+  "鶏大根",
+  "鮭のホイル焼き",
+  "おでん",
 ]
+
+let index = 1;
+const defaultFoodList: Food[] = foodNames.map(name => { return { id: index++, name } });
 
 const Home: NextPage = () => {
   const [foodList, setFoodList] = useState(defaultFoodList);
@@ -31,7 +42,7 @@ const Home: NextPage = () => {
   const [results, setResults]: [Food[], any] = useState([]);
 
   const addFood = (event: any) => {
-    foodList.push({ id: 0, name: String(additionalFood) });
+    foodList.push({ id: index++, name: String(additionalFood) });
     setFoodList(foodList);
     setAdditionalFood("");
     event.preventDefault();
