@@ -38,7 +38,7 @@ const defaultFoodList: Food[] = foodNames.map(name => { return { id: index++, na
 const Home: NextPage = () => {
   const [foodList, setFoodList] = useState(defaultFoodList);
   const [additionalFood, setAdditionalFood] = useState("");
-  const [count, setCount] = useState(5);
+  const [count, setCount] = useState("5");
   const [results, setResults]: [Food[], any] = useState([]);
 
   const addFood = (event: any) => {
@@ -56,7 +56,7 @@ const Home: NextPage = () => {
       copiedFoodList[i] = copiedFoodList[r];
       copiedFoodList[r] = tmp;
     }
-    setResults(copiedFoodList.slice(0, count));
+    setResults(copiedFoodList.slice(0, Number(count)));
   }
 
   return (
@@ -92,7 +92,8 @@ const Home: NextPage = () => {
         label="count"
         type="number"
         value={count}
-        onChange={event => setCount(Number(event.target.value))}
+        inputProps={{ inputMode: 'numeric' }}
+        onChange={event => setCount(event.target.value)}
       />
       <Button variant="contained" sx={{ mx: 2, my: 2 }} onClick={slot}>Slot</Button>
       <List>
