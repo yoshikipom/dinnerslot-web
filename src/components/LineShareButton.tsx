@@ -3,7 +3,7 @@ import React from "react";
 
 const LineShareButton = (props: any) => {
     return (
-        <Button variant="outlined" href={`https://line.me/R/share?text=${encodeURI(props.message)}`}>
+        <Button sx={{ mx: 2, my: 2 }} variant="outlined" href={`https://line.me/R/share?text=${encodeURI(props.message)}`}>
             Share by LINE
         </Button>
     );

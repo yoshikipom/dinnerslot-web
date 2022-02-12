@@ -16,32 +16,6 @@ interface Food {
   name: string
 }
 
-const foodNames = [
-  "ささみチーズかつ",
-  "からあげ",
-  "油淋鶏",
-  "メンチカツ",
-  "にくじゃが",
-  "きんぴらごぼう",
-  "切り干し大根",
-  "シチュー",
-  "カレーライス",
-  "ハヤシライス",
-  "ルーロー飯",
-  "そばめし",
-  "グラタン",
-  "角煮",
-  "ハンバーグ",
-  "鶏手羽煮",
-  "ネギ塩豚",
-  "鶏大根",
-  "鮭のホイル焼き",
-  "おでん",
-]
-
-let index = 1;
-const defaultFoodList: Food[] = foodNames.map(name => { return { id: index++, name } });
-
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: theme.palette.common.black,
@@ -50,19 +24,18 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 }));
 
 const Home: NextPage = () => {
-  const [foodList, setFoodList] = useState(defaultFoodList);
-  const [additionalFood, setAdditionalFood] = useState("");
+  const [foodList, setFoodList]: [Food[], any] = useState([]);
   const [count, setCount] = useState("5");
   const [results, setResults]: [Food[], any] = useState([]);
   const [lineMessage, setLineMessage] = useState("");
 
   const [value, setValue] = useState('1');
 
-  const addFood = (event: any) => {
-    foodList.push({ id: index++, name: String(additionalFood) });
-    setFoodList(foodList);
-    setAdditionalFood("");
-    event.preventDefault();
+  const inputChange = (foodListInputRaw: string) => {
+    const strList = foodListInputRaw.split('\n').filter(val => val);
+    let index = 1;
+    const newFoodList: Food[] = strList.map(name => ({ id: index++, name }));
+    setFoodList(newFoodList);
   };
 
   const updateResult = (foodList: Food[]) => {
@@ -96,7 +69,6 @@ const Home: NextPage = () => {
 
   return (
     <Paper variant="outlined" sx={{ p: 2 }}>
-
       <TabContext value={value}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <TabList onChange={(_, value) => setValue(value)}>
@@ -109,12 +81,14 @@ const Home: NextPage = () => {
             Food List
           </Typography>
           <TextField
-            id="name"
-            label="name"
-            value={additionalFood}
-            onChange={event => setAdditionalFood(event.target.value)}
+            id="input"
+            label="Input"
+            multiline
+            fullWidth
+            rows={5}
+            onChange={(event) => inputChange(event.target.value)}
           />
-          <Button variant="contained" sx={{ mx: 2, my: 2 }} onClick={addFood}>Add</Button>
+          <p>Count: {foodList.length}</p>
           <List>
             {foodList.map((food: Food) => {
               return <div key={food.id}>
@@ -145,8 +119,7 @@ const Home: NextPage = () => {
                 <TableHead>
                   <TableRow>
                     <StyledTableCell>No.</StyledTableCell>
-                    <StyledTableCell>ID</StyledTableCell>
-                    <StyledTableCell>name</StyledTableCell>
+                    <StyledTableCell>food</StyledTableCell>
                     <StyledTableCell>action</StyledTableCell>
                   </TableRow>
                 </TableHead>
@@ -156,10 +129,9 @@ const Home: NextPage = () => {
                       key={index}
                       sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                     >
-                      <StyledTableCell component="th" scope="row">{index}
+                      <StyledTableCell component="th" scope="row">{index+1}
                       </StyledTableCell>
-                      <StyledTableCell>{food.id} </StyledTableCell>
-                      <StyledTableCell>{food.name}</StyledTableCell>
+                      <StyledTableCell>{food.id} {food.name}</StyledTableCell>
                       <StyledTableCell>
                         <Button variant="outlined" sx={{ mx: 2 }} onClick={slotOneItem.bind(this, index)}>Change</Button>
                       </StyledTableCell>
@@ -167,7 +139,7 @@ const Home: NextPage = () => {
                   ))}
                 </TableBody>
               </Table>
-              <LineShareButton sx={{ my: 2 }} message={lineMessage} />
+              <LineShareButton message={lineMessage} />
             </TableContainer>
           }
         </TabPanel>
