@@ -1,11 +1,15 @@
 import type { NextPage } from 'next'
-import { Button, List, ListItem, ListItemIcon, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
-import RestaurantIcon from '@mui/icons-material/Restaurant';
+import { Box, Button, List, ListItem, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
 import { TextField } from '@mui/material'
 import { useState } from 'react';
 import { styled } from '@mui/material/styles';
 import { tableCellClasses } from '@mui/material/TableCell';
 import LineShareButton from '../components/LineShareButton';
+import Tab from '@mui/material/Tab';
+import TabContext from '@mui/lab/TabContext';
+import TabList from '@mui/lab/TabList';
+import TabPanel from '@mui/lab/TabPanel';
+
 
 interface Food {
   id: number
@@ -52,6 +56,8 @@ const Home: NextPage = () => {
   const [results, setResults]: [Food[], any] = useState([]);
   const [lineMessage, setLineMessage] = useState("");
 
+  const [value, setValue] = useState('1');
+
   const addFood = (event: any) => {
     foodList.push({ id: index++, name: String(additionalFood) });
     setFoodList(foodList);
@@ -90,74 +96,82 @@ const Home: NextPage = () => {
 
   return (
     <Paper variant="outlined" sx={{ p: 2 }}>
-      <Typography variant="h6" component="div">
-        Food List
-      </Typography>
-      <TextField
-        id="name"
-        label="name"
-        value={additionalFood}
-        onChange={event => setAdditionalFood(event.target.value)}
-      />
-      <Button variant="contained" sx={{ mx: 2, my: 2 }} onClick={addFood}>Add</Button>
-      <List>
-        {foodList.map((food: Food) => {
-          return <div key={food.id}>
-            <ListItem>
-              <ListItemIcon>
-                <RestaurantIcon />
-              </ListItemIcon>
-              {food.id} {food.name}
-            </ListItem>
-          </div>
-        })}
-      </List>
 
-      <Typography variant="h6" component="div">
-        Slot
-      </Typography>
-      <TextField
-        id="count"
-        label="count"
-        type="number"
-        value={count}
-        inputProps={{ inputMode: 'numeric' }}
-        onChange={event => setCount(event.target.value)}
-      />
-      <Button variant="contained" sx={{ mx: 2, my: 2 }} onClick={slot}>Slot</Button>
+      <TabContext value={value}>
+        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+          <TabList onChange={(_, value) => setValue(value)}>
+            <Tab label="LIST" value="1" />
+            <Tab label="SLOT" value="2" />
+          </TabList>
+        </Box>
+        <TabPanel value="1">
+          <Typography sx={{ my: 2 }} variant="h6" component="div">
+            Food List
+          </Typography>
+          <TextField
+            id="name"
+            label="name"
+            value={additionalFood}
+            onChange={event => setAdditionalFood(event.target.value)}
+          />
+          <Button variant="contained" sx={{ mx: 2, my: 2 }} onClick={addFood}>Add</Button>
+          <List>
+            {foodList.map((food: Food) => {
+              return <div key={food.id}>
+                <ListItem>
+                  {food.id} {food.name}
+                </ListItem>
+              </div>
+            })}
+          </List>
+        </TabPanel>
+        <TabPanel value="2">
+          <Typography sx={{ my: 2 }} variant="h6" component="div">
+            Slot
+          </Typography>
+          <TextField
+            id="count"
+            label="count"
+            type="number"
+            value={count}
+            inputProps={{ inputMode: 'numeric' }}
+            onChange={event => setCount(event.target.value)}
+          />
+          <Button variant="contained" sx={{ mx: 2, my: 2 }} onClick={slot}>Slot</Button>
 
-      {results.length > 0 &&
-        <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 650 }} aria-label="simple table">
-            <TableHead>
-              <TableRow>
-                <StyledTableCell>No.</StyledTableCell>
-                <StyledTableCell>ID</StyledTableCell>
-                <StyledTableCell>name</StyledTableCell>
-                <StyledTableCell>action</StyledTableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {results.map((food: Food, index: number) => (
-                <TableRow
-                  key={index}
-                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                >
-                  <StyledTableCell component="th" scope="row">{index}
-                  </StyledTableCell>
-                  <StyledTableCell>{food.id} </StyledTableCell>
-                  <StyledTableCell>{food.name}</StyledTableCell>
-                  <StyledTableCell>
-                    <Button variant="outlined" sx={{ mx: 2 }} onClick={slotOneItem.bind(this, index)}>Change</Button>
-                  </StyledTableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-          <LineShareButton message={lineMessage}/>
-        </TableContainer>
-      }
-
+          {results.length > 0 &&
+            <TableContainer component={Paper}>
+              <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                <TableHead>
+                  <TableRow>
+                    <StyledTableCell>No.</StyledTableCell>
+                    <StyledTableCell>ID</StyledTableCell>
+                    <StyledTableCell>name</StyledTableCell>
+                    <StyledTableCell>action</StyledTableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {results.map((food: Food, index: number) => (
+                    <TableRow
+                      key={index}
+                      sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                    >
+                      <StyledTableCell component="th" scope="row">{index}
+                      </StyledTableCell>
+                      <StyledTableCell>{food.id} </StyledTableCell>
+                      <StyledTableCell>{food.name}</StyledTableCell>
+                      <StyledTableCell>
+                        <Button variant="outlined" sx={{ mx: 2 }} onClick={slotOneItem.bind(this, index)}>Change</Button>
+                      </StyledTableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+              <LineShareButton sx={{ my: 2 }} message={lineMessage} />
+            </TableContainer>
+          }
+        </TabPanel>
+      </TabContext>
     </Paper>
   )
 }
