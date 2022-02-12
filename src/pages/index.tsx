@@ -1,8 +1,10 @@
 import type { NextPage } from 'next'
-import { Button, List, ListItem, ListItemIcon, Paper, Typography } from '@mui/material';
+import { Button, List, ListItem, ListItemIcon, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
 import RestaurantIcon from '@mui/icons-material/Restaurant';
 import { TextField } from '@mui/material'
 import { useState } from 'react';
+import { styled } from '@mui/material/styles';
+import { tableCellClasses } from '@mui/material/TableCell';
 
 interface Food {
   id: number
@@ -35,6 +37,13 @@ const foodNames = [
 let index = 1;
 const defaultFoodList: Food[] = foodNames.map(name => { return { id: index++, name } });
 
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  [`&.${tableCellClasses.head}`]: {
+    backgroundColor: theme.palette.common.black,
+    color: theme.palette.common.white,
+  },
+}));
+
 const Home: NextPage = () => {
   const [foodList, setFoodList] = useState(defaultFoodList);
   const [additionalFood, setAdditionalFood] = useState("");
@@ -57,6 +66,15 @@ const Home: NextPage = () => {
       copiedFoodList[r] = tmp;
     }
     setResults(copiedFoodList.slice(0, Number(count)));
+  }
+
+  const slotOneItem = (index: number) => {
+    const copiedFoodList: Food[] = foodList.concat();
+    const remainingList: Food[] = copiedFoodList.filter((food) => !results.includes(food))
+
+    const r = Math.floor(Math.random() * (remainingList.length));
+    results[index] = remainingList[r];
+    setResults(results.slice(0, Number(count)));
   }
 
   return (
@@ -96,18 +114,38 @@ const Home: NextPage = () => {
         onChange={event => setCount(event.target.value)}
       />
       <Button variant="contained" sx={{ mx: 2, my: 2 }} onClick={slot}>Slot</Button>
-      <List>
-        {results.map((food: Food) => {
-          return <div key={food.id}>
-            <ListItem>
-              <ListItemIcon>
-                <RestaurantIcon />
-              </ListItemIcon>
-              {food.id} {food.name}
-            </ListItem>
-          </div>
-        })}
-      </List>
+
+      {results.length > 0 &&
+        <TableContainer component={Paper}>
+          <Table sx={{ minWidth: 650 }} aria-label="simple table">
+            <TableHead>
+              <TableRow>
+                <StyledTableCell>No.</StyledTableCell>
+                <StyledTableCell>ID</StyledTableCell>
+                <StyledTableCell>name</StyledTableCell>
+                <StyledTableCell>action</StyledTableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {results.map((food: Food, index: number) => (
+                <TableRow
+                  key={index}
+                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                >
+                  <StyledTableCell component="th" scope="row">{index}
+                  </StyledTableCell>
+                  <StyledTableCell>{food.id} </StyledTableCell>
+                  <StyledTableCell>{food.name}</StyledTableCell>
+                  <StyledTableCell>
+                    <Button variant="outlined" sx={{ mx: 2 }} onClick={slotOneItem.bind(this, index)}>Change</Button>
+                  </StyledTableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      }
+
     </Paper>
   )
 }
