@@ -5,6 +5,7 @@ import { TextField } from '@mui/material'
 import { useState } from 'react';
 import { styled } from '@mui/material/styles';
 import { tableCellClasses } from '@mui/material/TableCell';
+import LineShareButton from '../components/LineShareButton';
 
 interface Food {
   id: number
@@ -49,6 +50,7 @@ const Home: NextPage = () => {
   const [additionalFood, setAdditionalFood] = useState("");
   const [count, setCount] = useState("5");
   const [results, setResults]: [Food[], any] = useState([]);
+  const [lineMessage, setLineMessage] = useState("");
 
   const addFood = (event: any) => {
     foodList.push({ id: index++, name: String(additionalFood) });
@@ -56,6 +58,15 @@ const Home: NextPage = () => {
     setAdditionalFood("");
     event.preventDefault();
   };
+
+  const updateResult = (foodList: Food[]) => {
+    setResults(foodList);
+    let newLineMessage = "[Generated Dinner List]" + "\n";
+    for (const food of foodList) {
+      newLineMessage += food.name + "\n";
+    }
+    setLineMessage(newLineMessage);
+  }
 
   const slot = () => {
     const copiedFoodList = foodList.concat();
@@ -65,7 +76,7 @@ const Home: NextPage = () => {
       copiedFoodList[i] = copiedFoodList[r];
       copiedFoodList[r] = tmp;
     }
-    setResults(copiedFoodList.slice(0, Number(count)));
+    updateResult(copiedFoodList.slice(0, Number(count)));
   }
 
   const slotOneItem = (index: number) => {
@@ -74,7 +85,7 @@ const Home: NextPage = () => {
 
     const r = Math.floor(Math.random() * (remainingList.length));
     results[index] = remainingList[r];
-    setResults(results.slice(0, Number(count)));
+    updateResult(results.slice(0, Number(count)));
   }
 
   return (
@@ -143,6 +154,7 @@ const Home: NextPage = () => {
               ))}
             </TableBody>
           </Table>
+          <LineShareButton message={lineMessage}/>
         </TableContainer>
       }
 
