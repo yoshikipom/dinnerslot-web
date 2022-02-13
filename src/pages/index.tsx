@@ -7,7 +7,10 @@ import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import { Food } from '../model/Food';
 import Slot from '../components/Slot';
-import ListInput from '../components/ListInput';
+import dynamic from "next/dynamic";
+const ListInput = dynamic(() => import("../components/ListInput"), {
+  ssr: false,
+});
 
 
 const Home: NextPage = () => {
