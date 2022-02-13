@@ -18,7 +18,7 @@ const Home: NextPage = () => {
   const [tabValue, setTabValue] = useState('1');
 
   return (
-    <Paper variant="outlined" sx={{ p: 2 }}>
+    <Paper variant="outlined" sx={{ p: 1 }}>
       <TabContext value={tabValue}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <TabList onChange={(_, value) => setTabValue(value)}>

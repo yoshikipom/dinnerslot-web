@@ -1,7 +1,8 @@
-import { Typography, TextField, Button, TableContainer, Paper, Table, TableHead, TableRow, TableBody, TableCell, styled, tableCellClasses } from "@mui/material";
+import { Typography, TextField, Button, TableContainer, Paper, Table, TableHead, TableRow, TableBody, TableCell, styled, tableCellClasses, IconButton } from "@mui/material";
 import React, { useState } from "react";
 import { Food } from "../model/Food";
 import LineShareButton from "./LineShareButton";
+import ChangeCircleIcon from '@mui/icons-material/ChangeCircle';
 
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -64,10 +65,10 @@ const Slot = (props: any) => {
 
             {results.length > 0 &&
                 <TableContainer component={Paper}>
-                    <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                    <Table aria-label="simple table">
                         <TableHead>
                             <TableRow>
-                                <StyledTableCell>No.</StyledTableCell>
+                                {/* <StyledTableCell>No.</StyledTableCell> */}
                                 <StyledTableCell>food</StyledTableCell>
                                 <StyledTableCell>action</StyledTableCell>
                             </TableRow>
@@ -78,11 +79,11 @@ const Slot = (props: any) => {
                                     key={index}
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                 >
-                                    <StyledTableCell component="th" scope="row">{index + 1}
-                                    </StyledTableCell>
+                                    {/* <StyledTableCell component="th" scope="row">{index + 1}
+                                    </StyledTableCell> */}
                                     <StyledTableCell>{food.id} {food.name}</StyledTableCell>
                                     <StyledTableCell>
-                                        <Button variant="outlined" sx={{ mx: 2 }} onClick={slotOneItem.bind(this, index)}>Change</Button>
+                                        <IconButton onClick={slotOneItem.bind(this, index)}><ChangeCircleIcon /></IconButton>
                                     </StyledTableCell>
                                 </TableRow>
                             ))}
