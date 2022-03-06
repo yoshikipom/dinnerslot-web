@@ -21,10 +21,7 @@ const Slot = (props: any) => {
 
     const updateResult = (foodList: Food[]) => {
         setResults(foodList);
-        let newLineMessage = "[Generated Dinner List]" + "\n";
-        for (const food of foodList) {
-            newLineMessage += food.name + "\n";
-        }
+        const newLineMessage = foodList.map(food => food.name).join('\n');
         setLineMessage(newLineMessage);
     }
 
@@ -42,6 +39,10 @@ const Slot = (props: any) => {
     const slotOneItem = (index: number) => {
         const copiedFoodList: Food[] = foodList.concat();
         const remainingList: Food[] = copiedFoodList.filter((food) => !results.includes(food))
+    
+        if (remainingList.length == 0) {
+            return;
+        }
 
         const r = Math.floor(Math.random() * (remainingList.length));
         results[index] = remainingList[r];
