@@ -31,7 +31,7 @@ const ListInput = (props: any) => {
             </Typography>
             <TextField
                 id="input"
-                label="Input"
+                label="Please input food names separated by line breaks"
                 multiline
                 fullWidth
                 rows={5}
