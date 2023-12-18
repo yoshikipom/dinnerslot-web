@@ -3,6 +3,9 @@ Generate random set from inputed food list.
 This application runs on only browser (no backend).
 https://yoshikipom.github.io/dinnerslot-web/
 
+## Blog post for this development (Japanese only)
+https://tech-yoshikipom.hatenablog.com/entry/2022/03/16/084633
+
 ## how to use
 - LIST tab
   - input food names separated by line breaks
